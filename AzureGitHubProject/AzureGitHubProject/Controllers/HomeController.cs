@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace AzureGitHubProject.Controllers
 {
     public class HomeController : Controller
+
     {
         private readonly ILogger<HomeController> _logger;
 
@@ -20,6 +21,7 @@ namespace AzureGitHubProject.Controllers
 
         public IActionResult Index()
         {
+            ViewData["somevalue"] = "Test";
             return View();
         }
 
