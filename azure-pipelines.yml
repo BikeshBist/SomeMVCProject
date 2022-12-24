@@ -29,7 +29,7 @@ stages:
 
           - script :
 
-             echo 'test stage job1 Step 2  ${{parameter:param3}}'
+             echo 'test stage job1 Step 2  ${{parameters.param3}}'
 
  - stage: buildstage
 
