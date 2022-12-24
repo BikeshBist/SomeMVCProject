@@ -16,10 +16,9 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
 - task: replacetokens@5
   inputs:
-    targetFiles: '**/appsetting.josn'
+    targetFiles: '**/appsettings.json'
     encoding: 'auto'
     tokenPattern: 'default'
     writeBOM: true
@@ -50,5 +49,5 @@ steps:
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
+    ArtifactName: 'dropangular'
     publishLocation: 'Container'
