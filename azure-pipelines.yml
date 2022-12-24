@@ -1,3 +1,29 @@
+pool: 
+
+  name: default
+
+
+
+variables:
+
+   - group: globalgroup123
+
+   - name : pipeline
+
+     value: "i am pipe line variable"
+
+   - name : pipeline1
+
+     value: "i am pipe line1 variable"
+
+parameters:
+
+  - name: param1
+
+    
+
+
+
 stages:
 
  - stage: teststage
@@ -14,11 +40,11 @@ stages:
 
           - script :
 
-             echo 'test stage job1 Step 1'
+             echo 'test stage job1 Step 1 $(pipeline)'
 
           - script :
 
-             echo 'test stage job1 Step 2'
+             echo 'test stage job1 Step 2  $(param1)'
 
  - stage: buildstage
 
@@ -38,4 +64,4 @@ stages:
 
           - script :
 
-             echo 'bhuild stage job1 Step 2
+             echo 'bhuild stage job1 Step 2'
