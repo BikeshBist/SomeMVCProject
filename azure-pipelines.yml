@@ -12,41 +12,25 @@ parameters:
   - name: param3
     default: '123'
 
-    
-
 stages:
  - stage: teststage
    jobs:
     - job : job1
       pool: 
           name: default
-
       steps:
-
           - script :
-
              echo 'test stage job1 Step 1 $(pipeline)'
-
           - script :
-
              echo 'test stage job1 Step 2  ${{parameters.param3}}'
 
  - stage: buildstage
-
    jobs:
-
     - job : job1
-
       pool: 
-
           name: default
-
       steps:
-
           - script :
-
              echo 'build stage job1 Step 1'
-
           - script :
-
              echo 'bhuild stage job1 Step 2'
