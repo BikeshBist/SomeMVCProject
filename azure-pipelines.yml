@@ -19,7 +19,7 @@ steps:
 
 - task: replacetokens@5
   inputs:
-    targetFiles: '/appsettings.json'
+    targetFiles: '**/appsetting.josn'
     encoding: 'auto'
     tokenPattern: 'default'
     writeBOM: true
