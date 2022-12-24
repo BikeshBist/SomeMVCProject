@@ -19,6 +19,7 @@ variables:
 parameters:
 
   - name: param1
+   value: 123
 
     
 
