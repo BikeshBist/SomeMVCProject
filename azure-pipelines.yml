@@ -1,35 +1,24 @@
 pool: 
-
   name: default
 
-
-
 variables:
-
    - group: globalgroup123
-
    - name : pipelineN
      value: "i am pipe line variable"
    - name : pipeline1
      value: "i am pipe line1 variable"
 
 parameters:
-
   - name: param3
     default: '123'
 
     
 
 stages:
-
  - stage: teststage
-
    jobs:
-
     - job : job1
-
       pool: 
-
           name: default
 
       steps:
@@ -40,7 +29,7 @@ stages:
 
           - script :
 
-             echo 'test stage job1 Step 2  $(param1)'
+             echo 'test stage job1 Step 2  ${{parameter:param3}}'
 
  - stage: buildstage
 
