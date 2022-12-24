@@ -1,36 +1,54 @@
-pool: 
-  name: default
+pool:
+  name: Default
 
 variables:
-   - group: globalgroup123
-   - name : pipelineN
-     value: "i am pipe line variable"
-   - name : pipeline1
-     value: "i am pipe line1 variable"
+  - group: DevopsVariable
+  - name: solution
+    value: '/*.sln'
+  - name: buildPlatform
+    value: 'Any CPU'
+  - name: buildConfiguration
+    value: 'Release'
 
-parameters:
-  - name: param3
-    default: '123'
+steps:
+- task: NuGetToolInstaller@1
 
-stages:
- - stage: teststage
-   jobs:
-    - job : job1
-      pool: 
-          name: default
-      steps:
-          - script :
-             echo 'test stage job1 Step 1 $(pipeline)'
-          - script :
-             echo 'test stage job1 Step 2  ${{parameters.param3}}'
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
 
- - stage: buildstage
-   jobs:
-    - job : job1
-      pool: 
-          name: default
-      steps:
-          - script :
-             echo 'build stage job1 Step 1'
-          - script :
-             echo 'bhuild stage job1 Step 2'
+- task: replacetokens@5
+  inputs:
+    targetFiles: '/appsettings.json'
+    encoding: 'auto'
+    tokenPattern: 'default'
+    writeBOM: true
+    actionOnMissing: 'warn'
+    keepToken: false
+    actionOnNoFiles: 'continue'
+    enableTransforms: false
+    enableRecursion: false
+    useLegacyPattern: false
+    enableTelemetry: true
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      \*TestProject*.dll
+      !**\*TestAdapter.dll
+      !**\obj\
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
