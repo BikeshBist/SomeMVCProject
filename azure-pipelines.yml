@@ -18,8 +18,8 @@ variables:
 
 parameters:
 
-  - name: param1
-   value: 123
+  - name: param3
+   value: '123'
 
     
 
