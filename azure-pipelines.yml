@@ -1,44 +1,36 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
-trigger:
-- main
-
-pool:
- name: Default
+pool: 
+  name: default
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
+   - group: globalgroup123
+   - name : pipelineN
+     value: "i am pipe line variable"
+   - name : pipeline1
+     value: "i am pipe line1 variable"
 
-steps:
-- task: NuGetToolInstaller@1
+parameters:
+  - name: param3
+    default: '123'
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
+stages:
+ - stage: teststage
+   jobs:
+    - job : job1
+      pool: 
+          name: default
+      steps:
+          - script :
+             echo 'test stage job1 Step 1 $(pipeline)'
+          - script :
+             echo 'test stage job1 Step 2  ${{parameters.param3}}'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      \*testonazuredevops*.dll
-      !**\*TestAdapter.dll
-      !**\obj\
-    
+ - stage: buildstage
+   jobs:
+    - job : job1
+      pool: 
+          name: default
+      steps:
+          - script :
+             echo 'build stage job1 Step 1'
+          - script :
+             echo 'bhuild stage job1 Step 2'
