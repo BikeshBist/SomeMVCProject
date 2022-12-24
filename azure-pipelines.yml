@@ -8,22 +8,17 @@ variables:
 
    - group: globalgroup123
 
-   - name : pipeline
-
+   - name : pipelineN
      value: "i am pipe line variable"
-
    - name : pipeline1
-
      value: "i am pipe line1 variable"
 
 parameters:
 
   - name: param3
-   value: '123'
+    default: '123'
 
     
-
-
 
 stages:
 
